@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    var ws = new WebSocket("http://127.0.0.1:3000");
+ws.send("hello");
+ws.onopen = function() { console.log("open")};
+ws.onmessage = function(evt) { console.log(evt.data) };
+ws.onclose = function(evt) { console.log("WebSocketClosed!"); }
+ws.onerror = function(evt) { console.log("WebSocketError!"); };
+    </script>
+</body>
+</html>
