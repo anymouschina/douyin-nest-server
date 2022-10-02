@@ -3,7 +3,7 @@ import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { Question } from './interfaces/questions.interface';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags,ApiParam } from '@nestjs/swagger';
 @ApiTags('问题')
 @Controller('question')
 export class QuestionController {
@@ -20,7 +20,11 @@ export class QuestionController {
     return this.questionService.bulkCreate(Questions.questions);
   }
 
-
+  @Get('randomByType')
+  // @ApiParam({ name: 'id' }) 
+  randomByType(@Param () params:CreateQuestionDto ){
+    return this.questionService.random(params);
+  }
   @Get()
   findAll() {
     return this.questionService.findAll();
