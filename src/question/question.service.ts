@@ -4,6 +4,10 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Question } from './interfaces/questions.interface';
+interface randomDto{
+  num:string
+  type:string
+}
 @Injectable()
 export class QuestionService {
   constructor(@InjectModel('Question') private readonly QuestionModel: Model<Question>) {}
@@ -18,15 +22,23 @@ export class QuestionService {
 
     
   }
-  async  random(params:CreateQuestionDto) {
-    return this.QuestionModel.count().exec(async function (err, count) {
+  async  random(params:randomDto) {
+    const number = parseInt(params.num || '1');
+    return await this.QuestionModel.aggregate([{
+      $match:{
+        type: params.type
+      }
+    }]).sample(number);
+    // count({type:params.type}).exec(async  (err, count) =>{
 
-      // Get a random entry
-      var random = Math.floor(Math.random() * count)
+    //   // Get a random entry
+    //   var random = Math.floor(Math.random() * count)
     
-      // Again query all this.QuestionModels but only fetch one offset by our random #
-      return await this.QuestionModel.findOne().skip(random).exec()
-    })
+    //   // Again query all this.QuestionModels but only fetch one offset by our random #
+    //   const data =await this.QuestionModel.findOne({type:params.type}).skip(random).exec() 
+    //   console.info(data,'data')
+    //   return data; 
+    // })
   }
   async findAll(): Promise<Question[]> {
     return await this.QuestionModel.find().exec();

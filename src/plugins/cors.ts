@@ -3,7 +3,6 @@ import { Request } from 'express';
 const allowlist = ['http://localhost:8081'];
 const corsOptionsDelegate = (req: Request, callback) => {
     let corsOptions;
-    console.log("req.header('Origin')",req.header('Origin'))
     if (allowlist.indexOf(req.header('Origin')) !== -1) {
         // console.log("req.header('Origin')",req.header('Origin'))
 　　//如果你不需要 Cookie 可以设置为 *
