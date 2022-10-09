@@ -16,8 +16,6 @@ export class QuestionService {
     return await createdQuestion.save();
   }
   async bulkCreate(array: Question[]){
-     console.info(array,'array')
-    //execute those operations
     return await this.QuestionModel.insertMany(array)
 
     
