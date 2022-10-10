@@ -24,7 +24,7 @@ export class QuestionService {
     const number = parseInt(params.num || '1');
     return await this.QuestionModel.aggregate([{
       $match:{
-        type: params.type
+        type: new RegExp(params.type,'i')
       }
     }]).sample(number);
     // count({type:params.type}).exec(async  (err, count) =>{
