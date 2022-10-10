@@ -7,7 +7,7 @@ async function bootstrap() {
   app.enableCors(corsOptionsDelegate);
   const options = new DocumentBuilder()
   .setTitle('api document')
-  .setDescription('抖音无人直播相关接口文档')
+  .setDescription('抖音无人直播相关接口文档初始版')
   .setVersion('1.0')
   .build();
   const document = SwaggerModule.createDocument(app, options);
