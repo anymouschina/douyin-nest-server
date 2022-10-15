@@ -1,0 +1,35 @@
+mitm:
+  host: 127.0.0.1
+  port: 8080
+
+webdriver:
+  headless: true
+  use: chrome
+  edge:
+    bin: msedgedriver.exe
+  chrome:
+    bin: D:\project\douyin-nest\src\douyin_web_live\chromedriver\chromedriver.exe
+    no_sandbox: True
+
+output:
+  use:
+    - print
+    - xml
+    - debug
+  xml:
+    save_path: "./"
+    file_pattern: "{room_id}_{ts}.xml"
+  debug:
+    save_path:
+      error: "./error"
+      unknown: "./debug"
+      known: False
+
+live:
+  rooms:
+    - "https://live.douyin.com/698602027795"
+  users:
+    - ""
+
+api:
+  userinfo: 'https://live.douyin.com/webcast/user/?aid=6383&target_uid='
