@@ -8,7 +8,7 @@ webdriver:
   edge:
     bin: msedgedriver.exe
   chrome:
-    bin: D:\project\douyin-nest\src\douyin_web_live\chromedriver\chromedriver.exe
+    bin: test
     no_sandbox: True
 
 output:

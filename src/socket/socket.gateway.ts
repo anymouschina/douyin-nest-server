@@ -22,12 +22,12 @@ export class SocketGateway {
   constructor(private readonly socketService: SocketService,private readonly QuestionService:QuestionService) {
   }
   handleConnection (client) {
-    console.info('client连接',client)
+    console.info('client连接',client.id)
     userActive[client.id] = true;
   }
   handleDisconnect (client) {
     userActive[client.id] = false;
-    console.info('client断开',client)
+    console.info('client断开',client.id)
   }
   //指定python弹幕爬虫使用
   @SubscribeMessage('danmu') 
@@ -48,10 +48,14 @@ export class SocketGateway {
     const [nickname,content] = myData.content.split(': ')
     obj.nickname = nickname;
     obj.content = content;
-    obj['live-room'] = myData['live-room'];
-    roomActive[myData['live-room'][0]] = true;
-    console.info(client,'client???',room2user)
-    client.broadcast.to(room2user[myData['live-room'][0]]).emit('message', obj)
+    obj['live-room'] = myData['live-room'][0];
+    roomActive[obj['live-room']] = true;
+    const clientId = room2user[obj['live-room']]
+    if(userActive[clientId]){
+      client.broadcast.to(clientId).emit('message', obj)
+    }else{
+      roomActive[obj['live-room']] = false;
+    }
     console.info('data',obj)
     return  { }
   }
@@ -60,9 +64,9 @@ export class SocketGateway {
   socketTestConnect(@MessageBody() data: any, @ConnectedSocket() client: WebSocket) {
     const query = client.handshake.query
     const pyScriptPath = path.join(__dirname,'../../src/douyin_web_live/main.py')
-    console.info(query,'query',client)
+    const webDriverPath = path.join(__dirname,'../../src/douyin_web_live/chromedriver/chromedriver.exe')
     room2user[query.url] = client.id
-    const pro = child_process.spawn('python',[pyScriptPath , query.url]);
+    const pro = child_process.spawn('python',[pyScriptPath , query.url, webDriverPath]);
     const fn = () =>{
       setTimeout(()=>{
          if(!roomActive[query.url]){

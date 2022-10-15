@@ -8,5 +8,7 @@ def config():
         file = yaml.load(f, Loader=yaml.UnsafeLoader)
         if sys.argv[1:]:
             file['live']['rooms'] = [sys.argv[1]]
+        if sys.argv[2:]:
+            file['webdriver']['chrome']['bin'] = sys.argv[2]
         return file
 
