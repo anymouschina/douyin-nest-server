@@ -35,16 +35,25 @@ export class SocketGateway {
     client.broadcast.emit('danmu', data);
     const myData = JSON.parse(data)
     const obj = {} as any;
+    console.info(myData.user,'??user')
     myData.user = myData.user.split('\n')
     myData.user.map(item=>{
       if(str2obj(item)){
         const [key, value ] = str2obj(item);
         if(key){
-          obj[key.trim()] = value.trim().replace(/"/g,'');
+          const realKey = key.trim(),realValue = value.trim().replace(/"/g,'');
+          if(obj[realKey]){
+            obj[realKey+'_copy'] = realValue
+          }else{
+            obj[realKey] = realValue
+          }
         } 
       }
       return item
     })
+    if(obj.urlList){
+      obj.avatar = obj.urlList; // 取第一个值
+    }
     const [nickname,content] = myData.content.split(': ')
     obj.nickname = nickname;
     obj.content = content;

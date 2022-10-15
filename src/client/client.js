@@ -1,6 +1,6 @@
 const { io } = require('socket.io-client');
 
-const socket = io('http://0.0.0.0:3001?url=https://live.douyin.com/176689231567');
+const socket = io('http://0.0.0.0:3001?url=https://live.douyin.com/5893162289');
 
 socket.on('connect', () => {
   console.log('已连接服务端');
