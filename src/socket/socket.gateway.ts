@@ -60,6 +60,7 @@ export class SocketGateway {
      * total ： 直播间人数统计
      */
     client.broadcast.emit('danmu', data);
+    console.info(data,'data')
     const myData = JSON.parse(data)
     const obj = {
       ...myData,
@@ -134,7 +135,7 @@ export class SocketGateway {
           roomActive[query.url] = false;
           fn()
          }
-      },1000 * 10) // 10s 无最新消息就断开
+      },1000 * 30) // 10s 无最新消息就断开
     }
     fn()
     roomActive[query.url] = true;

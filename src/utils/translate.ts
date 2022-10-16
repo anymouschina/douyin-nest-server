@@ -56,8 +56,8 @@ var timestamp = Math.floor(date.getTime() / 1000);
  }
  
  export function isCode(str:string){
-    const [promptAll,prompt] = str.match(/特点-(.*)/),
-        [nPromptAll,nprompt] = str.match(/瑕疵-(.*)/)
+    const [promptAll,prompt] = str.match(/特点-(.*)/)||['',''],
+        [nPromptAll,nprompt] = str.match(/瑕疵-(.*)/)||['','']
     return {
         isPrompt:!!prompt,
         prompt,
