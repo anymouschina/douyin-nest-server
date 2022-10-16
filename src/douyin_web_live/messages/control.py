@@ -10,5 +10,5 @@ class ControlMessage(Base):
 
     def __str__(self):
         # 基本上都是下播了，比如主播离开了，违规被Ban了啥的，有这个消息，直播间信息必然发生变化
-        self.send_message('系统消息'+ ': '  + '直播间异常')
+        self.send_message('系统消息'+ ': '  + '直播间异常', 'error')
         return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + '【直播间信息】'

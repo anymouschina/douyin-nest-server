@@ -8,7 +8,7 @@ class FansclubMessage(Base):
         self.instance = message_pb2.FansclubMessage()
 
     def format_content(self):
-        self.send_message(self.user().nickname + ': '  + self.instance.content)
+        self.send_message(self.user().nickname + ': '  + self.instance.content,'fansclub')
         return self.instance.content
 
     def __str__(self):

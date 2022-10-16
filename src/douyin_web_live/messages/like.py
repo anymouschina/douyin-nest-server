@@ -8,7 +8,7 @@ class LikeMessage(Base):
         self.instance = message_pb2.LikeMessage()
 
     def format_content(self):
-        self.send_message(self.user().nickname + ': ' + ' 点赞了直播间（' + str(self.instance.count) + '连赞）')
+        self.send_message(self.user().nickname + ': ' + ' 点赞了直播间（' + str(self.instance.count) + '连赞）','like')
         return self.user().nickname + ' 点赞了直播间（' + str(self.instance.count) + '连赞）'
 
     def __str__(self):

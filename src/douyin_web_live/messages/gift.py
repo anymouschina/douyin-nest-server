@@ -20,7 +20,7 @@ class GiftMessage(Base):
         return self.instance.gift
 
     def format_content(self):
-        self.send_message(self.user().nickname + ': ' + self.instance.common.describe)
+        self.send_message(self.user().nickname + ': ' + self.instance.common.describe,'gift')
         return self.instance.common.describe
 
     def __str__(self):

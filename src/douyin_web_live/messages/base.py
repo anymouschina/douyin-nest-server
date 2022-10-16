@@ -32,9 +32,10 @@ class Base:
 
     def __str__(self):
         pass
-    def send_message(self, message):
+    def send_message(self, message, type = 'unknow'):
         Client.send_message('danmu',json.dumps({
             'user':  str(self.user()),
             'content':message,
+            'type':type,
             'live-room':config()['live']['rooms']
         }))

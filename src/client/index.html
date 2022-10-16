@@ -21,7 +21,9 @@ socket.on('connect', () => {
 
 socket.on('message',(msg)=>{
     console.log('收到消息： ',msg)
-    document.getElementById('app').innerHTML = JSON.stringify(msg)
+    document.getElementById('app').innerHTML = `${JSON.stringify(msg)} \n 
+        <img src="${msg.avatar}"/>
+    `
 })
 socket.on('reply',(msg)=>{
     console.log('收到消息：replay ',msg)

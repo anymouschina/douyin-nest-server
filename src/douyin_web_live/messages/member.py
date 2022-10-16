@@ -11,7 +11,7 @@ class MemberMessage(Base):
     def format_content(self):
         template = self.instance.common.displayText.defaultPattern
         nickname = self.user().nickname
-        self.send_message(nickname + ': '  + template.replace('{0:user}', nickname).replace('{1:string}', ''))
+        self.send_message(nickname + ': '  + template.replace('{0:user}', nickname).replace('{1:string}', ''),'member')
         return template.replace('{0:user}', nickname).replace('{1:string}', '')
 
     def __str__(self):

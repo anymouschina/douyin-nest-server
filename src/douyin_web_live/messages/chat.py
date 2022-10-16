@@ -11,7 +11,7 @@ class ChatMessage(Base):
         return self.instance.content
 
     def format_content(self):
-        self.send_message(self.user().nickname + ': ' + self.instance.content)
+        self.send_message(self.user().nickname + ': ' + self.instance.content,'chat')
         return self.user().nickname + ': ' + self.instance.content
 
     def __str__(self):

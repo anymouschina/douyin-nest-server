@@ -13,7 +13,7 @@ class RoomUserSeqMessage(Base):
         }
 
     def format_content(self):
-        self.send_message('统计人数' + ': '  + self.instance.totalUserStr)
+        self.send_message('统计人数' + ': '  + self.instance.totalUserStr,'total')
         return self.instance.totalUserStr
 
     def __str__(self):

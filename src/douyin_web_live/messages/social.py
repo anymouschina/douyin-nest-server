@@ -9,7 +9,7 @@ class SocialMessage(Base):
 
     def format_content(self):
         nickname = self.user().nickname
-        self.send_message( nickname+ ': '   + ' 关注了主播')
+        self.send_message( nickname+ ': '   + ' 关注了主播','social')
         return nickname + ' 关注了主播'
 
     def __str__(self):
