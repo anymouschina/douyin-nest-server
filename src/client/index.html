@@ -9,9 +9,9 @@
 <body>
     <div id="app"></div>
 </body>
-<script src="https://cdn.bootcss.com/socket.io/2.1.1/socket.io.dev.js"></script>
-<script type="text/javascript">
-var socket = io.connect('http://localhost:3001?url=https://live.douyin.com/176689231567');
+<script src="../../node_modules/socket.io/client-dist/socket.io.min.js"></script>
+<script>
+var socket = io.connect('http://localhost:3001?url=https://live.douyin.com/603515901363');
 socket.on('connect', () => {
   console.log('已连接服务端');
   socket.emit('createDouyin','11')

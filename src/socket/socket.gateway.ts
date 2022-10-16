@@ -17,7 +17,17 @@ const roomActive = {
 const userActive = {
 
 }
-@WebSocketGateway(3001,{ cors: true })
+const options = {
+  cors: {
+    origin: '*',
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+}
+@WebSocketGateway(3001,{ cors:{
+  allowedHeaders:'*',
+  origin:'*'
+} })
 export class SocketGateway {
   constructor(private readonly socketService: SocketService,private readonly QuestionService:QuestionService) {
   }
