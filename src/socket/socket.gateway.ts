@@ -42,6 +42,17 @@ export class SocketGateway {
   //指定python弹幕爬虫使用
   @SubscribeMessage('danmu') 
   socketTest(client,data:any) {
+    /**
+     * data.type 消息类型 
+     * chat : 弹幕
+     * gift : 礼物
+     * like : 点赞
+     * error: 直播间异常
+     * fansclub : 加入粉丝团
+     * member: 用户进入直播间
+     * social ： 关注
+     * total ： 直播间人数统计
+     */
     client.broadcast.emit('danmu', data);
     const myData = JSON.parse(data)
     const obj = {} as any;
@@ -64,7 +75,12 @@ export class SocketGateway {
       return item
     })
     if(obj.urlList){
-      obj.avatar = obj.urlList[2]; // 取第3个值
+      const avatar = obj.urlList.find((i:string)=>i.indexOf('avatar')>-1)
+      if(avatar){
+        obj.avatar = avatar
+      }else{
+        obj.avatar = obj.urlList[0]; // 取第3个值
+      }
     }
     const [nickname,content] = myData.content.split(': ')
     obj.nickname = nickname;
