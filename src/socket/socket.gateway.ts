@@ -52,8 +52,10 @@ export class SocketGateway {
         const [key, value ] = str2obj(item);
         if(key){
           const realKey = key.trim(),realValue = value.trim().replace(/"/g,'');
-          if(obj[realKey]){
-            obj[realKey+'_copy'] = realValue
+          if(obj[realKey] && typeof obj[realKey] !== 'object'){
+            obj[realKey] = [obj[realKey],realValue]
+          }else if(typeof obj[realKey] === 'object'){
+            obj[realKey].push(realValue)
           }else{
             obj[realKey] = realValue
           }
@@ -62,7 +64,7 @@ export class SocketGateway {
       return item
     })
     if(obj.urlList){
-      obj.avatar = obj.urlList; // 取第一个值
+      obj.avatar = obj.urlList[2]; // 取第3个值
     }
     const [nickname,content] = myData.content.split(': ')
     obj.nickname = nickname;
