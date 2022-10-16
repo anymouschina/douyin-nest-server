@@ -6,8 +6,10 @@ import {MessageBodyType} from './interfaces/socket.interface'
 import { QuestionService } from 'src/question/question.service';
 import { str2obj } from '../utils/index'
 import * as WebSocket from 'ws';
+import { sendTrans } from 'src/utils/translate';
 const child_process = require('child_process')
 const path = require('path')
+const CHAT_TYPE = 'chat'
 const room2user = {
 
 }
@@ -17,12 +19,8 @@ const roomActive = {
 const userActive = {
 
 }
-const options = {
-  cors: {
-    origin: '*',
-    methods: ["GET", "POST"],
-    credentials: true
-  }
+const userNeedTranslate = {
+  
 }
 @WebSocketGateway(3001,{ cors:{
   allowedHeaders:'*',
@@ -34,6 +32,10 @@ export class SocketGateway {
   handleConnection (client) {
     console.info('client连接',client.id)
     userActive[client.id] = true;
+    const query = client.handshake.query
+    if(query.needTranslate){
+      userNeedTranslate[client.id] = true;
+    }
   }
   handleDisconnect (client) {
     userActive[client.id] = false;
@@ -41,7 +43,7 @@ export class SocketGateway {
   }
   //指定python弹幕爬虫使用
   @SubscribeMessage('danmu') 
-  socketTest(client,data:any) {
+  async socketTest(client,data:any) {
     /**
      * data.type 消息类型 
      * chat : 弹幕
@@ -55,7 +57,9 @@ export class SocketGateway {
      */
     client.broadcast.emit('danmu', data);
     const myData = JSON.parse(data)
-    const obj = {} as any;
+    const obj = {
+      type:myData.type
+    } as any;
     console.info(myData.user,'??user')
     myData.user = myData.user.split('\n')
     myData.user.map(item=>{
@@ -92,6 +96,10 @@ export class SocketGateway {
       client.broadcast.to(clientId).emit('message', obj)
     }else{
       roomActive[obj['live-room']] = false;
+    }
+    if(myData.type === CHAT_TYPE && userNeedTranslate[clientId]){
+      obj.content = await sendTrans(obj.content);
+      client.broadcast.to(clientId).emit('cn2en', obj)
     }
     console.info('data',obj)
     return  { }
@@ -138,7 +146,7 @@ export class SocketGateway {
     })
   }
 
-
+ 
   @SubscribeMessage('createSocket')
   create(@MessageBody() createSocketDto: CreateSocketDto) {
     console.info(createSocketDto,'ccccc')

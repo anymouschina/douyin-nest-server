@@ -5,28 +5,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+   <style>
+  #app{
+    border: 0px;
+  }
+  iframe{
+    border: 0px !important;
+    width:100%;
+    height: 1054px;
+  }
+   </style>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <iframe src="https://27370.gradio.app/" id="frame"  ></iframe>
+    </div>
 </body>
 <script src="../../node_modules/socket.io/client-dist/socket.io.min.js"></script>
 <script>
-var socket = io.connect('http://localhost:3001?url=https://live.douyin.com/603515901363');
-socket.on('connect', () => {
-  console.log('已连接服务端');
-  socket.emit('createDouyin','11')
-});
+// var socket = io.connect('http://localhost:3001?url=https://live.douyin.com/603515901363');
+// socket.on('connect', () => {
+//   console.log('已连接服务端');
+//   socket.emit('createDouyin','11')
+// });
 
 // socket.emit('danmu', 'hello');
 
-socket.on('message',(msg)=>{
-    console.log('收到消息： ',msg)
-    document.getElementById('app').innerHTML = `${JSON.stringify(msg)} \n 
-        <img src="${msg.avatar}"/>
-    `
-})
-socket.on('reply',(msg)=>{
-    console.log('收到消息：replay ',msg)
-})
+// socket.on('message',(msg)=>{
+//     console.log('收到消息： ',msg)
+//     // document.getElementById('app').innerHTML = `${JSON.stringify(msg)} \n 
+//     //     <img src="${msg.avatar}"/>
+//     // `
+// })
+// socket.on('reply',(msg)=>{
+//     console.log('收到消息：replay ',msg)
+// })
 </script>
 </html>
