@@ -1,5 +1,5 @@
-import CryptoJS from 'crypto-js';
-import request from 'request'
+const  CryptoJS = require('crypto-js') 
+const request = require('request');
 var SecretId = "AKIDAE4f3C7g05xe7MfkaBXlmY8VtBMMBqLe";
 var SecretKey = "A7tVt2zsdDbm2MvaBe8c2xlNq7Nf1RuP";
 
@@ -55,8 +55,18 @@ var timestamp = Math.floor(date.getTime() / 1000);
      return sig;
  }
  
+ export function isCode(str:string){
+    const [promptAll,prompt] = str.match(/特点-(.*)/),
+        [nPromptAll,nprompt] = str.match(/瑕疵-(.*)/)
+    return {
+        isPrompt:!!prompt,
+        prompt,
+        isNprompt:!!nprompt,
+        nprompt
+    }
+ }
  // 发送翻译请求
- export async function sendTrans(sourceText)
+ export async function sendTrans(sourceText:string)
  {
      if(sourceText == null || sourceText == "")
      {

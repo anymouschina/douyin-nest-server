@@ -7,6 +7,7 @@ import { QuestionService } from 'src/question/question.service';
 import { str2obj } from '../utils/index'
 import * as WebSocket from 'ws';
 import { sendTrans } from 'src/utils/translate';
+import { isCode } from './../utils/translate';
 const child_process = require('child_process')
 const path = require('path')
 const CHAT_TYPE = 'chat'
@@ -33,7 +34,10 @@ export class SocketGateway {
     console.info('client连接',client.id)
     userActive[client.id] = true;
     const query = client.handshake.query
+    console.info('query连接',query)
     if(query.needTranslate){
+        console.info('需要翻译',query)
+
       userNeedTranslate[client.id] = true;
     }
   }
@@ -58,9 +62,9 @@ export class SocketGateway {
     client.broadcast.emit('danmu', data);
     const myData = JSON.parse(data)
     const obj = {
+      ...myData,
       type:myData.type
     } as any;
-    console.info(myData.user,'??user')
     myData.user = myData.user.split('\n')
     myData.user.map(item=>{
       if(str2obj(item)){
@@ -79,12 +83,11 @@ export class SocketGateway {
       return item
     })
     if(obj.urlList){
-      const avatar = obj.urlList.find((i:string)=>i.indexOf('avatar')>-1)
-      if(avatar){
-        obj.avatar = avatar
-      }else{
-        obj.avatar = obj.urlList[0]; // 取第3个值
+      if(typeof obj.urlList === 'object'){
+        const avatar = obj.urlList.find((i:string)=>i.indexOf('avatar')>-1)
+        if(avatar)obj.avatar = avatar
       }
+        obj.avatar = obj.urlList; // 取第3个值
     }
     const [nickname,content] = myData.content.split(': ')
     obj.nickname = nickname;
@@ -97,11 +100,21 @@ export class SocketGateway {
     }else{
       roomActive[obj['live-room']] = false;
     }
-    if(myData.type === CHAT_TYPE && userNeedTranslate[clientId]){
-      obj.content = await sendTrans(obj.content);
+    console.info(obj.type,CHAT_TYPE,userNeedTranslate[clientId],'?userNeedTranslate[clientId]')
+    const {
+      isPrompt,
+      prompt,
+      isNprompt,
+      nprompt
+    } = isCode(obj.content);
+    if(obj.type === CHAT_TYPE && userNeedTranslate[clientId] && (isPrompt || isNprompt)){
+
+      const content = await sendTrans(prompt || nprompt) as any;
+      obj.content = content.TargetText;
+      obj.isPrompt = prompt;
+      obj.isNPrompt = nprompt;
       client.broadcast.to(clientId).emit('cn2en', obj)
     }
-    console.info('data',obj)
     return  { }
   }
   //创建爬虫子进程
